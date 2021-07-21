@@ -20,7 +20,7 @@ const galleryContent = `<div class="card">
                                 <p class="card-text cap">city, state</p>
                             </div>
                         </div>`;
-gallery.insertAdjacentHTML("beforeend", galleryContent);
+// gallery.insertAdjacentHTML("beforeend", galleryContent);
 
 // Create modal content:
 const body = document.querySelector("body");
@@ -53,6 +53,7 @@ async function getRandomUserData() {
     try {
         const response = await fetch(randomUserUrl);
         randomUserData = await response.json();
+        generateCardHTML(randomUserData.results);
         // console.log(data.results);
         return;
         return await response.json();
@@ -62,5 +63,23 @@ async function getRandomUserData() {
 }
 
 getRandomUserData().then(() => {
-    console.log(randomUserData);
+    console.log(randomUserData.results);
 });
+
+function generateCardHTML(data) {
+    data.map((person) => {
+        // console.log(person);
+        const cardContent = `<div class="card">
+                            <div class="card-img-container">
+                                <img class="card-img" src=${person.picture.medium} alt="profile picture">
+                            </div>
+                            <div class="card-info-container">
+                                <h3 id="name" class="card-name cap">${person.name.first} ${person.name.last}</h3>
+                                <p class="card-text">${person.email}</p>
+                                <p class="card-text cap">${person.location.city}, ${person.location.state}</p>
+                            </div>
+                        </div>`;
+        // console.log(cardContent);
+        gallery.insertAdjacentHTML("beforeend", cardContent);
+    });
+}
