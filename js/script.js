@@ -3,22 +3,22 @@ console.log("script.js is connected");
 // Create search-container content:
 const searchContainer = document.querySelector(".search-container");
 const searchContainerContent = `<form action="#" method="get">
-                            <input type="search" id="search-input" class="search-input" placeholder="Search...">
-                            <input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
+                                    <input type="search" id="search-input" class="search-input" placeholder="Search...">
+                                    <input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
                                 </form>`;
 searchContainer.insertAdjacentHTML("beforeend", searchContainerContent);
 
 // Create gallery content:
 const gallery = document.getElementById("gallery");
 const galleryContent = `<div class="card">
-                    <div class="card-img-container">
-                        <img class="card-img" src="https://via.placeholder.com/90" alt="profile picture">
-                    </div>
-                    <div class="card-info-container">
-                        <h3 id="name" class="card-name cap">first last</h3>
-                        <p class="card-text">email</p>
-                        <p class="card-text cap">city, state</p>
-                    </div>
+                            <div class="card-img-container">
+                                <img class="card-img" src="https://via.placeholder.com/90" alt="profile picture">
+                            </div>
+                            <div class="card-info-container">
+                                <h3 id="name" class="card-name cap">first last</h3>
+                                <p class="card-text">email</p>
+                                <p class="card-text cap">city, state</p>
+                            </div>
                         </div>`;
 gallery.insertAdjacentHTML("beforeend", galleryContent);
 
@@ -43,4 +43,24 @@ const modal = `<div class="modal-container">
                         <button type="button" id="modal-next" class="modal-next btn">Next</button>
                     </div>
                 </div>`;
-body.insertAdjacentHTML("beforeend", modal);
+// body.insertAdjacentHTML("beforeend", modal);
+
+// Fetch API experiments:
+const randomUserUrl = "https://randomuser.me/api/?results=12";
+let randomUserData;
+
+async function getRandomUserData() {
+    try {
+        const response = await fetch(randomUserUrl);
+        randomUserData = await response.json();
+        // console.log(data.results);
+        return;
+        return await response.json();
+    } catch (error) {
+        console.log("Error when fetching random user data:", error);
+    }
+}
+
+getRandomUserData().then(() => {
+    console.log(randomUserData);
+});
