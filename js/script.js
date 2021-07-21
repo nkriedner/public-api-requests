@@ -54,9 +54,18 @@ async function getRandomUserData() {
         const response = await fetch(randomUserUrl);
         randomUserData = await response.json();
         generateCardHTML(randomUserData.results);
-        // console.log(data.results);
-        return;
-        return await response.json();
+        // Add event listener to user cards:
+        const cards = document.querySelectorAll(".card");
+        console.log(cards);
+        for (let i = 0; i < cards.length; i++) {
+            console.log(cards[i]);
+            cards[i].addEventListener("click", (e) => {
+                console.log(e.target);
+                console.log(i);
+                console.log(randomUserData.results[i]);
+                generateModalHTML(randomUserData.results[i]);
+            });
+        }
     } catch (error) {
         console.log("Error when fetching random user data:", error);
     }
@@ -69,17 +78,44 @@ getRandomUserData().then(() => {
 function generateCardHTML(data) {
     data.map((person) => {
         // console.log(person);
-        const cardContent = `<div class="card">
-                            <div class="card-img-container">
-                                <img class="card-img" src=${person.picture.medium} alt="profile picture">
+        const cardContent = `
+                            <div class="card">
+                                <div class="card-img-container">
+                                    <img class="card-img" src=${person.picture.medium} alt="profile picture">
+                                </div>
+                                <div class="card-info-container">
+                                    <h3 id="name" class="card-name cap">${person.name.first} ${person.name.last}</h3>
+                                    <p class="card-text">${person.email}</p>
+                                    <p class="card-text cap">${person.location.city}, ${person.location.state}</p>
+                                </div>
                             </div>
-                            <div class="card-info-container">
-                                <h3 id="name" class="card-name cap">${person.name.first} ${person.name.last}</h3>
-                                <p class="card-text">${person.email}</p>
-                                <p class="card-text cap">${person.location.city}, ${person.location.state}</p>
-                            </div>
-                        </div>`;
-        // console.log(cardContent);
+                            `;
         gallery.insertAdjacentHTML("beforeend", cardContent);
     });
+}
+
+function generateModalHTML(personData) {
+    console.log(personData.picture.large);
+    const modalContent = `
+                        <div class="modal-container">
+                            <div class="modal">
+                                <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
+                                <div class="modal-info-container">
+                                    <img class="modal-img" src=${personData.picture.large} alt="profile picture">
+                                    <h3 id="name" class="modal-name cap">${personData.name.first} ${personData.name.last}</h3>
+                                    <p class="modal-text">${personData.email}</p>
+                                    <p class="modal-text cap">${personData.location.city}</p>
+                                    <hr>
+                                    <p class="modal-text">(555) 555-5555</p>
+                                    <p class="modal-text">123 Portland Ave., Portland, OR 97204</p>
+                                    <p class="modal-text">Birthday: 10/21/2015</p>
+                                </div>
+                            </div>
+                            <div class="modal-btn-container">
+                                <button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
+                                <button type="button" id="modal-next" class="modal-next btn">Next</button>
+                            </div>
+                        </div>
+                        `;
+    body.insertAdjacentHTML("beforeend", modalContent);
 }
