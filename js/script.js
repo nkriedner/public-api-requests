@@ -118,4 +118,10 @@ function generateModalHTML(personData) {
                         </div>
                         `;
     body.insertAdjacentHTML("beforeend", modalContent);
+    // Event listener for modal close button:
+    const modalCloseBtn = document.getElementById("modal-close-btn");
+    modalCloseBtn.addEventListener("click", () => {
+        console.log("click");
+        document.querySelector(".modal-container").remove();
+    });
 }
