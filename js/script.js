@@ -56,9 +56,9 @@ async function getRandomUserData() {
         generateCardHTML(randomUserData.results);
         // Add event listener to user cards:
         const cards = document.querySelectorAll(".card");
-        console.log(cards);
+        // console.log(cards);
         for (let i = 0; i < cards.length; i++) {
-            console.log(cards[i]);
+            // console.log(cards[i]);
             cards[i].addEventListener("click", (e) => {
                 console.log(e.target);
                 console.log(i);
@@ -95,20 +95,38 @@ function generateCardHTML(data) {
 }
 
 function generateModalHTML(personData) {
-    console.log(personData.picture.large);
+    const birthDayFullDate = new Date(personData.dob.date);
+    const birthDay = `${
+        birthDayFullDate.getMonth() + 1
+    }/${birthDayFullDate.getDate()}/${birthDayFullDate.getFullYear()}`;
+    console.log(birthDay);
     const modalContent = `
                         <div class="modal-container">
                             <div class="modal">
                                 <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
                                 <div class="modal-info-container">
-                                    <img class="modal-img" src=${personData.picture.large} alt="profile picture">
-                                    <h3 id="name" class="modal-name cap">${personData.name.first} ${personData.name.last}</h3>
-                                    <p class="modal-text">${personData.email}</p>
-                                    <p class="modal-text cap">${personData.location.city}</p>
+                                    <img class="modal-img" src=${
+                                        personData.picture.large
+                                    } alt="profile picture">
+                                    <h3 id="name" class="modal-name cap">${
+                                        personData.name.first
+                                    } ${personData.name.last}</h3>
+                                    <p class="modal-text">${
+                                        personData.email
+                                    }</p>
+                                    <p class="modal-text cap">${
+                                        personData.location.city
+                                    }</p>
                                     <hr>
-                                    <p class="modal-text">(555) 555-5555</p>
-                                    <p class="modal-text">123 Portland Ave., Portland, OR 97204</p>
-                                    <p class="modal-text">Birthday: 10/21/2015</p>
+                                    <p class="modal-text">${formatPhoneNumber(
+                                        personData.phone
+                                    )}</p>
+                                    <p class="modal-text">${
+                                        personData.location.street.number
+                                    } ${personData.location.street.name}, ${
+        personData.location.city
+    }, ${personData.location.state} ${personData.location.postcode}</p>
+                                    <p class="modal-text">Birthday: ${birthDay}</p>
                                 </div>
                             </div>
                             <div class="modal-btn-container">
@@ -124,4 +142,14 @@ function generateModalHTML(personData) {
         console.log("click");
         document.querySelector(".modal-container").remove();
     });
+}
+
+// Helper function to format the phone number (found at Stackoverflow: https://stackoverflow.com/questions/8358084/regular-expression-to-reformat-a-us-phone-number-in-javascript/41318684)
+function formatPhoneNumber(phoneNumberString) {
+    var cleaned = ("" + phoneNumberString).replace(/\D/g, "");
+    var match = cleaned.match(/^(\d{3})(\d{3})(\d{1,})$/); // changed this one to match phone numbers with less than 10 digits
+    if (match) {
+        return "(" + match[1] + ") " + match[2] + "-" + match[3];
+    }
+    return phoneNumberString; // changed this to return the given phone value if for some reason it cannot be transformed
 }
