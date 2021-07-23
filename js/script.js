@@ -159,9 +159,9 @@ searchSubmitBtn.addEventListener("click", () => filterUserData());
 function filterUserData() {
     // Reset randomUserDataList to search-filtered data:
     randomUserDataList = randomUserData.results.filter((data) =>
-        data.name.first
+        (data.name.first + " " + data.name.last)
             .toLowerCase()
-            .startsWith(searchInput.value.toLowerCase())
+            .includes(searchInput.value.toLowerCase())
     );
     // Check if search input was empty -> reset to original data list:
     if (searchInput.value === "") {
