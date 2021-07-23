@@ -46,7 +46,7 @@ const modal = `<div class="modal-container">
 // body.insertAdjacentHTML("beforeend", modal);
 
 // Fetch API experiments:
-const randomUserUrl = "https://randomuser.me/api/?results=12";
+const randomUserUrl = "https://randomuser.me/api/?nat=us,dk,fr,gb&results=12";
 let randomUserData;
 
 async function getRandomUserData() {
@@ -63,7 +63,7 @@ async function getRandomUserData() {
                 console.log(e.target);
                 console.log(i);
                 console.log(randomUserData.results[i]);
-                generateModalHTML(randomUserData.results[i]);
+                generateModalHTML(i);
             });
         }
     } catch (error) {
@@ -94,7 +94,8 @@ function generateCardHTML(data) {
     });
 }
 
-function generateModalHTML(personData) {
+function generateModalHTML(index) {
+    const personData = randomUserData.results[index];
     const birthDayFullDate = new Date(personData.dob.date);
     const birthDay = `${
         birthDayFullDate.getMonth() + 1
@@ -119,7 +120,7 @@ function generateModalHTML(personData) {
                                     }</p>
                                     <hr>
                                     <p class="modal-text">${formatPhoneNumber(
-                                        personData.phone
+                                        personData.cell
                                     )}</p>
                                     <p class="modal-text">${
                                         personData.location.street.number
@@ -139,8 +140,27 @@ function generateModalHTML(personData) {
     // Event listener for modal close button:
     const modalCloseBtn = document.getElementById("modal-close-btn");
     modalCloseBtn.addEventListener("click", () => {
-        console.log("click");
         document.querySelector(".modal-container").remove();
+    });
+    // Event listener for modal next button:
+    const modalNextBtn = document.getElementById("modal-next");
+    modalNextBtn.addEventListener("click", () => {
+        console.log("clicked NEXT");
+        // Check if there is a next data:
+        if (index < 11) {
+            document.querySelector(".modal-container").remove();
+            generateModalHTML(index + 1);
+        }
+    });
+    // Event listener for modal prev button:
+    const modalPrevBtn = document.getElementById("modal-prev");
+    modalPrevBtn.addEventListener("click", () => {
+        console.log("clicked PREV");
+        // Check if there is a prev data:
+        if (index > 0) {
+            document.querySelector(".modal-container").remove();
+            generateModalHTML(index - 1);
+        }
     });
 }
 
