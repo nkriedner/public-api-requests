@@ -9,7 +9,13 @@ Clicking the employee’s image or name opens a modal window with more detailed 
 
 I wrote all of the JavaScript code in the js files.
 
-The html and css files were provided by Teamtreehouse. 
+The html and css files were provided by Teamtreehouse.
+
+I edited the following styles:
+
+-   For the body: background-color
+-   For the card class: background-color, color of the name, background-color on hover
+-   For the modal: background-color, color of the name, background-color of the button (+ on hover), border-color for the image
 
 To view the project visit: https://nkriedner.github.io/public-api-requests/
 
