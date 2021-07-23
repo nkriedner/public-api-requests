@@ -66,9 +66,18 @@ function generateModalHTML(index) {
     const personData = randomUserDataList[index];
     // Format the birthday according to the requirements:
     const birthDayFullDate = new Date(personData.dob.date);
-    const birthDay = `${
-        birthDayFullDate.getMonth() + 1
-    }/${birthDayFullDate.getDate()}/${birthDayFullDate.getFullYear()}`;
+    let monthOfDate = birthDayFullDate.getMonth() + 1;
+    let dayOfDate = birthDayFullDate.getDate();
+    let yearOfDate = birthDayFullDate.getFullYear();
+    // Add a 0 before monthOfDate if it is a 1-digit number:
+    if (monthOfDate < 10) {
+        monthOfDate = "0" + monthOfDate;
+    }
+    // Add a 0 before dayOfDate if it is a 1-digit number:
+    if (dayOfDate < 10) {
+        dayOfDate = "0" + dayOfDate;
+    }
+    const birthDay = `${monthOfDate}/${dayOfDate}/${yearOfDate}`;
     // Create the HTML for the modal:
     const modalContent = `
                         <div class="modal-container">
