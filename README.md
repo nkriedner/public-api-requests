@@ -11,6 +11,6 @@ I wrote all of the JavaScript code in the js files.
 
 The html and css files were provided by Teamtreehouse. 
 
-To view the project visit: https://nkriedner.github.io/public-api-request/
+To view the project visit: https://nkriedner.github.io/public-api-requests/
 
 To contact me about this project use nkriedner@googlemail.com
