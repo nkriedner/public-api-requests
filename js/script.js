@@ -173,3 +173,18 @@ function formatPhoneNumber(phoneNumberString) {
     }
     return phoneNumberString; // changed this to return the given phone value if for some reason it cannot be transformed
 }
+
+// Search Component:
+const searchInput = document.getElementById("search-input");
+console.log(searchInput);
+searchInput.addEventListener("keyup", () => {
+    console.log(searchInput.value);
+    console.log(randomUserData.results);
+    const filteredUserData = randomUserData.results.filter((data) =>
+        data.name.first.toLowerCase().startsWith(searchInput.value)
+    );
+    console.log(filteredUserData);
+    // First remove user data on page:
+    document.getElementById("gallery").innerHTML = "";
+    generateCardHTML(filteredUserData);
+});
