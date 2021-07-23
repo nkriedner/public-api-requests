@@ -1,86 +1,40 @@
-console.log("script.js is connected");
-
-// Create search-container content:
+// **********
+// VARIABLES:
+// **********
+const body = document.querySelector("body");
 const searchContainer = document.querySelector(".search-container");
+const gallery = document.getElementById("gallery");
+const randomUserUrl = "https://randomuser.me/api/?nat=us,dk,fr,gb&results=12";
+let randomUserData;
+let randomUserDataList;
 const searchContainerContent = `<form action="#" method="get">
                                     <input type="search" id="search-input" class="search-input" placeholder="Search...">
                                     <input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
                                 </form>`;
+
+// Create search container:
 searchContainer.insertAdjacentHTML("beforeend", searchContainerContent);
 
-// Create gallery content:
-const gallery = document.getElementById("gallery");
-const galleryContent = `<div class="card">
-                            <div class="card-img-container">
-                                <img class="card-img" src="https://via.placeholder.com/90" alt="profile picture">
-                            </div>
-                            <div class="card-info-container">
-                                <h3 id="name" class="card-name cap">first last</h3>
-                                <p class="card-text">email</p>
-                                <p class="card-text cap">city, state</p>
-                            </div>
-                        </div>`;
-// gallery.insertAdjacentHTML("beforeend", galleryContent);
-
-// Create modal content:
-const body = document.querySelector("body");
-const modal = `<div class="modal-container">
-                    <div class="modal">
-                        <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
-                        <div class="modal-info-container">
-                            <img class="modal-img" src="https://via.placeholder.com/125" alt="profile picture">
-                            <h3 id="name" class="modal-name cap">name</h3>
-                            <p class="modal-text">email</p>
-                            <p class="modal-text cap">city</p>
-                            <hr>
-                            <p class="modal-text">(555) 555-5555</p>
-                            <p class="modal-text">123 Portland Ave., Portland, OR 97204</p>
-                            <p class="modal-text">Birthday: 10/21/2015</p>
-                        </div>
-                    </div>
-                    <div class="modal-btn-container">
-                        <button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
-                        <button type="button" id="modal-next" class="modal-next btn">Next</button>
-                    </div>
-                </div>`;
-// body.insertAdjacentHTML("beforeend", modal);
-
-// Fetch API experiments:
-const randomUserUrl = "https://randomuser.me/api/?nat=us,dk,fr,gb&results=12";
-let randomUserData;
-let randomUserDataList;
-
+// ***********************
+// DATA FETCHING FROM API:
+// ***********************
 async function getRandomUserData() {
     try {
         const response = await fetch(randomUserUrl);
         randomUserData = await response.json();
         randomUserDataList = randomUserData.results;
-        // generateCardHTML(randomUserData.results);
         generateCardHTML(randomUserDataList);
-        // // Add event listener to user cards:
-        // const cards = document.querySelectorAll(".card");
-        // // console.log(cards);
-        // for (let i = 0; i < cards.length; i++) {
-        //     // console.log(cards[i]);
-        //     cards[i].addEventListener("click", (e) => {
-        //         console.log(e.target);
-        //         console.log(i);
-        //         console.log(randomUserData.results[i]);
-        //         generateModalHTML(i);
-        //     });
-        // }
     } catch (error) {
         console.log("Error when fetching random user data:", error);
     }
 }
+getRandomUserData();
 
-getRandomUserData().then(() => {
-    console.log(randomUserData.results);
-});
-
+// ********************
+// CREATING USER CARDS:
+// ********************
 function generateCardHTML(data) {
     data.map((person) => {
-        // console.log(person);
         const cardContent = `
                             <div class="card">
                                 <div class="card-img-container">
@@ -97,25 +51,25 @@ function generateCardHTML(data) {
     });
     // Add event listener to user cards:
     const cards = document.querySelectorAll(".card");
-    // console.log(cards);
     for (let i = 0; i < cards.length; i++) {
-        // console.log(cards[i]);
-        cards[i].addEventListener("click", (e) => {
-            // console.log(e.target);
-            // console.log(i);
-            // console.log(randomUserData.results[i]);
+        cards[i].addEventListener("click", () => {
             generateModalHTML(i);
         });
     }
 }
 
+// *****************
+// CREATING MODAL:
+// *****************
 function generateModalHTML(index) {
+    // Set the person data for the modal to the index of the clicked card:
     const personData = randomUserDataList[index];
+    // Format the birthday according to the requirements:
     const birthDayFullDate = new Date(personData.dob.date);
     const birthDay = `${
         birthDayFullDate.getMonth() + 1
     }/${birthDayFullDate.getDate()}/${birthDayFullDate.getFullYear()}`;
-    console.log(birthDay);
+    // Create the HTML for the modal:
     const modalContent = `
                         <div class="modal-container">
                             <div class="modal">
@@ -160,7 +114,6 @@ function generateModalHTML(index) {
     // Event listener for modal next button:
     const modalNextBtn = document.getElementById("modal-next");
     modalNextBtn.addEventListener("click", () => {
-        console.log("clicked NEXT");
         // Check if there is a next data:
         if (index < randomUserDataList.length - 1) {
             document.querySelector(".modal-container").remove();
@@ -170,13 +123,45 @@ function generateModalHTML(index) {
     // Event listener for modal prev button:
     const modalPrevBtn = document.getElementById("modal-prev");
     modalPrevBtn.addEventListener("click", () => {
-        console.log("clicked PREV");
         // Check if there is a prev data:
         if (index > 0) {
             document.querySelector(".modal-container").remove();
             generateModalHTML(index - 1);
         }
     });
+}
+// EXTRA Event listener on body to close modal when clicked on black overlay:
+body.addEventListener("click", (e) => {
+    if (e.target.className === "modal-container") {
+        document.querySelector(".modal-container").remove();
+    }
+});
+
+// *****************
+// SEARCH COMPONENT:
+// *****************
+const searchInput = document.getElementById("search-input");
+const searchSubmitBtn = document.getElementById("search-submit");
+
+searchInput.addEventListener("search", () => filterUserData());
+searchInput.addEventListener("keyup", () => filterUserData());
+searchSubmitBtn.addEventListener("click", () => filterUserData());
+
+function filterUserData() {
+    // Reset randomUserDataList to search-filtered data:
+    randomUserDataList = randomUserData.results.filter((data) =>
+        data.name.first
+            .toLowerCase()
+            .startsWith(searchInput.value.toLowerCase())
+    );
+    // Check if search input was empty -> reset to original data list:
+    if (searchInput.value === "") {
+        randomUserDataList = randomUserData.results;
+    }
+    // Remove existing user data on page:
+    document.getElementById("gallery").innerHTML = "";
+    // Recreate the cards with filtered or original user data:
+    generateCardHTML(randomUserDataList);
 }
 
 // Helper function to format the phone number (found at Stackoverflow: https://stackoverflow.com/questions/8358084/regular-expression-to-reformat-a-us-phone-number-in-javascript/41318684)
@@ -188,26 +173,3 @@ function formatPhoneNumber(phoneNumberString) {
     }
     return phoneNumberString; // changed this to return the given phone value if for some reason it cannot be transformed
 }
-
-// Search Component:
-const searchInput = document.getElementById("search-input");
-console.log(searchInput);
-searchInput.addEventListener("keyup", () => {
-    console.log(searchInput.value);
-    const filteredUserData = randomUserData.results.filter((data) =>
-        data.name.first
-            .toLowerCase()
-            .startsWith(searchInput.value.toLowerCase())
-    );
-    console.log(filteredUserData);
-    // First remove user data on page:
-    document.getElementById("gallery").innerHTML = "";
-    if (searchInput.value === "") {
-        randomUserDataList = randomUserData.results;
-        generateCardHTML(randomUserDataList);
-    } else {
-        randomUserDataList = filteredUserData;
-        generateCardHTML(randomUserDataList);
-        // generateCardHTML(filteredUserData);
-    }
-});
