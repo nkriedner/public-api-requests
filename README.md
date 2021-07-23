@@ -15,7 +15,7 @@ I edited the following styles:
 
 -   For the body: background-color
 -   For the card class: background-color, color of the name, background-color on hover
--   For the modal: background-color, color of the name, background-color of the button (+ on hover), border-color for the image
+-   For the modal: background-color, color of the name, background-color of the button (+ on hover), border-color for the image, background-color for modal-close-button
 
 To view the project visit: https://nkriedner.github.io/public-api-requests/
 

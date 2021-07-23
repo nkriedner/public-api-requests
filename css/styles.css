@@ -17,7 +17,6 @@ body {
 body {
     font-family: "Nunito", sans-serif;
     text-align: center;
-    background: rgba(235, 235, 235, 0.9);
     background: hsl(241, 95%, 95%);
 }
 
@@ -32,7 +31,6 @@ header {
 
 header h1 {
     font-size: 1.25em;
-    color: rgba(50, 50, 50, 0.9);
     color: hsl(241, 95%, 15%);
     margin-top: 35px;
 }
@@ -91,10 +89,8 @@ header h1 {
     max-width: 360px;
     margin: 10px 10px 20px;
     padding: 10px;
-    background: rgba(245, 245, 245, 0.9);
     background: hsl(241, 95%, 89%);
     border-radius: 0.25em;
-    border: 1px solid rgba(50, 50, 50, 0.3);
     border: 1px solid hsl(241, 95%, 25%);
     transition: 0.4s ease-out;
     overflow: hidden;
@@ -136,7 +132,6 @@ header h1 {
     right: 0;
     bottom: 0;
     left: 0;
-    background: rgba(0, 0, 0, 0.7);
     background: rgba(39, 37, 121, 0.7);
 }
 
@@ -147,7 +142,6 @@ header h1 {
     min-height: 415px;
     margin: 10px auto auto;
     padding-bottom: 15px;
-    background: rgba(255, 255, 255, 1);
     background: hsl(241, 95%, 85%);
     border-radius: 0.25em;
     border: 1px solid rgba(100, 100, 100, 0.3);
@@ -160,7 +154,7 @@ header h1 {
     right: 15px;
     cursor: pointer;
     color: rgba(255, 255, 255, 0.9);
-    background: rgba(0, 0, 0, 0.8);
+    background: hsl(241, 95%, 25%);
     border-radius: 0.25em;
     border: 1px solid rgba(50, 50, 50, 0.3);
 }
@@ -197,7 +191,6 @@ header h1 {
     max-width: 420px;
     padding: 10px 15px 15px;
     margin: 10px auto auto;
-    background: rgba(255, 255, 255, 1);
     background: hsl(241, 95%, 85%);
     border-radius: 0.25em;
     border: 1px solid rgba(100, 100, 100, 0.3);
@@ -210,7 +203,7 @@ header h1 {
     text-transform: uppercase;
     color: rgba(255, 255, 255, 0.9);
     padding: 0.75em 1.5em;
-    background: rgba(0, 0, 0, 0.8);
+    background: hsl(241, 95%, 25%);
     border-radius: 0.35em;
     transition: 0.4s ease-out;
 }
@@ -253,7 +246,6 @@ header h1 {
 
 @media (min-width: 1024px) {
     .card:hover {
-        background: rgba(255, 255, 255, 1);
         background: hsl(241, 95%, 81%);
         border: 1px solid rgba(50, 50, 50, 0.9);
     }
@@ -263,7 +255,6 @@ header h1 {
     }
 
     .btn:hover {
-        background: rgba(255, 255, 255, 1);
         background: hsl(241, 95%, 81%);
         color: rgba(25, 25, 25, 1);
         /* color: rgba(255, 255, 255, 1); */
