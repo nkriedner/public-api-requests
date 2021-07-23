@@ -48,24 +48,27 @@ const modal = `<div class="modal-container">
 // Fetch API experiments:
 const randomUserUrl = "https://randomuser.me/api/?nat=us,dk,fr,gb&results=12";
 let randomUserData;
+let randomUserDataList;
 
 async function getRandomUserData() {
     try {
         const response = await fetch(randomUserUrl);
         randomUserData = await response.json();
-        generateCardHTML(randomUserData.results);
-        // Add event listener to user cards:
-        const cards = document.querySelectorAll(".card");
-        // console.log(cards);
-        for (let i = 0; i < cards.length; i++) {
-            // console.log(cards[i]);
-            cards[i].addEventListener("click", (e) => {
-                console.log(e.target);
-                console.log(i);
-                console.log(randomUserData.results[i]);
-                generateModalHTML(i);
-            });
-        }
+        randomUserDataList = randomUserData.results;
+        // generateCardHTML(randomUserData.results);
+        generateCardHTML(randomUserDataList);
+        // // Add event listener to user cards:
+        // const cards = document.querySelectorAll(".card");
+        // // console.log(cards);
+        // for (let i = 0; i < cards.length; i++) {
+        //     // console.log(cards[i]);
+        //     cards[i].addEventListener("click", (e) => {
+        //         console.log(e.target);
+        //         console.log(i);
+        //         console.log(randomUserData.results[i]);
+        //         generateModalHTML(i);
+        //     });
+        // }
     } catch (error) {
         console.log("Error when fetching random user data:", error);
     }
@@ -92,10 +95,22 @@ function generateCardHTML(data) {
                             `;
         gallery.insertAdjacentHTML("beforeend", cardContent);
     });
+    // Add event listener to user cards:
+    const cards = document.querySelectorAll(".card");
+    // console.log(cards);
+    for (let i = 0; i < cards.length; i++) {
+        // console.log(cards[i]);
+        cards[i].addEventListener("click", (e) => {
+            // console.log(e.target);
+            // console.log(i);
+            // console.log(randomUserData.results[i]);
+            generateModalHTML(i);
+        });
+    }
 }
 
 function generateModalHTML(index) {
-    const personData = randomUserData.results[index];
+    const personData = randomUserDataList[index];
     const birthDayFullDate = new Date(personData.dob.date);
     const birthDay = `${
         birthDayFullDate.getMonth() + 1
@@ -147,7 +162,7 @@ function generateModalHTML(index) {
     modalNextBtn.addEventListener("click", () => {
         console.log("clicked NEXT");
         // Check if there is a next data:
-        if (index < 11) {
+        if (index < randomUserDataList.length - 1) {
             document.querySelector(".modal-container").remove();
             generateModalHTML(index + 1);
         }
@@ -179,12 +194,20 @@ const searchInput = document.getElementById("search-input");
 console.log(searchInput);
 searchInput.addEventListener("keyup", () => {
     console.log(searchInput.value);
-    console.log(randomUserData.results);
     const filteredUserData = randomUserData.results.filter((data) =>
-        data.name.first.toLowerCase().startsWith(searchInput.value)
+        data.name.first
+            .toLowerCase()
+            .startsWith(searchInput.value.toLowerCase())
     );
     console.log(filteredUserData);
     // First remove user data on page:
     document.getElementById("gallery").innerHTML = "";
-    generateCardHTML(filteredUserData);
+    if (searchInput.value === "") {
+        randomUserDataList = randomUserData.results;
+        generateCardHTML(randomUserDataList);
+    } else {
+        randomUserDataList = filteredUserData;
+        generateCardHTML(randomUserDataList);
+        // generateCardHTML(filteredUserData);
+    }
 });
